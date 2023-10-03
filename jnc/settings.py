@@ -44,7 +44,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 ]
 
-
 # Thired party apps (第三方應用套件)
 INSTALLED_APPS += [
     'corsheaders',
@@ -75,7 +74,8 @@ ROOT_URLCONF = 'jnc.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        # 'DIRS': [os.path.join(BASE_DIR, "templates")], # 設定 Template路徑讓 Django可以讀取到模版
+        'DIRS': [os.path.join(BASE_DIR, 'frontend/dist')], # 讀取 VueJS build後所生成的 dist檔
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -146,10 +146,27 @@ USE_L10N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.2/howto/static-files/
+# Vue project location
+FRONTEND_DIR = os.path.join(BASE_DIR, 'frontend')
 
-STATIC_URL = 'static/'
+# Add for vuejs (放靜態檔案的路徑，將該路徑下的檔案蒐集到STATIC_ROOT。DEBUG is False會關閉)
+STATICFILES_DIRS = [ 
+    os.path.join(FRONTEND_DIR, 'dist', 'static'),
+]
+
+# 【Static files】(CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/4.2/howto/static-files/
+STATIC_ROOT = os.path.join(BASE_DIR, 'static') # 新增這一行(Heroku)
+
+# 對外提供WEB訪問時的URL地址
+STATIC_URL = '/static/'
+
+
+# 【Media Config】
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
