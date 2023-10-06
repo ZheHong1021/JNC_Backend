@@ -1,5 +1,3 @@
 venv
-# frontend
-# !frontend/dist
-
-jnc_frontend
+frontend
+!frontend/dist
