@@ -25,8 +25,8 @@ SECRET_KEY = 'django-insecure-39jd814rlilr8!3chyh+c^=cpk#0hubma2^s6=20ot8)j&ha2k
 # SECURITY WARNING: don't run with debug turned on in production!
 # SECURITY WARNING: don't run with debug turned on in production!
 # 【系統模式】: 二選一
-DEBUG = True # Development Mode (測試開發)
-# DEBUG = False # Production Mode (正式發布)
+# DEBUG = True # Development Mode (測試開發)
+DEBUG = False # Production Mode (正式發布)
 
 
 # ALLOWED_HOSTS = []
@@ -47,6 +47,8 @@ INSTALLED_APPS = [
 # Thired party apps (第三方應用套件)
 INSTALLED_APPS += [
     'corsheaders',
+    'rest_framework', # rest_framework
+    'django_extensions', # 可以使用一些專案查詢工具(EX: python manage.py show_urls)
 ]
 
 # Custom apps (自定義)
@@ -59,6 +61,7 @@ INSTALLED_APPS += [
 import sys, os
 sys.path.append(os.path.join(BASE_DIR, 'apps')) # at the bottom of the fiS
 
+# Middleware 中間件
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -69,8 +72,12 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+# 根路由
 ROOT_URLCONF = 'jnc.urls'
 
+
+
+# Template 模板樣式
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -139,6 +146,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+# 語言設定
 LANGUAGE_CODE = 'zh-hant' #繁體中文
 TIME_ZONE = 'Asia/Taipei' # 台北時區
 USE_I18N = True
@@ -172,3 +180,16 @@ MEDIA_URL = '/media/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# 斜槓
+# APPEND_SLASH=False
+
+
+# settings.py
+REST_FRAMEWORK = {
+    # 【權限限制】
+    # 'DEFAULT_PERMISSION_CLASSES': [
+    #     'rest_framework.permissions.IsAuthenticated',
+    # ]
+}
