@@ -162,6 +162,7 @@ STATICFILES_DIRS = [
     os.path.join(FRONTEND_DIR, 'dist', 'static'),
 ]
 
+
 # 【Static files】(CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 STATIC_ROOT = os.path.join(BASE_DIR, 'static') # 新增這一行(Heroku)
