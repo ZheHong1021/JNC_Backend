@@ -146,7 +146,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-# 語言設定
+# 語言設定(1)
 LANGUAGE_CODE = 'zh-hant' #繁體中文
 TIME_ZONE = 'Asia/Taipei' # 台北時區
 USE_I18N = True
