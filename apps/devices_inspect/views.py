@@ -1,6 +1,10 @@
 from django.shortcuts import render
-from devices_inspect.models import JNCDeviceModel, JNCInspectModel
-from devices_inspect.serializers import JNCDeviceSerializer, JNCInspectSerializer
+
+from devices_inspect.models import \
+    JNCPositionModel, JNCDeviceModel, JNCInspectModel, JNCInspectHistoryModel
+
+from devices_inspect.serializers import \
+    JNCPositionSerializer, JNCPositionInspectSerializer, JNCInspectSerializer
 from django.http import HttpResponse
 
 #region 【DRF】
@@ -18,25 +22,20 @@ from rest_framework import generics
 #     })
 
 # JNC 設備
-class JNCDeviceList(generics.ListCreateAPIView):
-    queryset = JNCDeviceModel.objects.all()
-    serializer_class = JNCDeviceSerializer
-    # permission_classes = [IsAuthenticated]
+class JNCPositionList(generics.ListCreateAPIView):
+    queryset = JNCPositionModel.objects.all()
+    serializer_class = JNCPositionSerializer
 
-
-class JNCDeviceDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = JNCDeviceModel.objects.all()
-    serializer_class = JNCDeviceSerializer
-    # permission_classes = [IsAuthenticated]
+class JNCPositionDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = JNCPositionModel.objects.all()
+    serializer_class = JNCPositionInspectSerializer
 
 # JNC 檢測紀錄
 class JNCInspectList(generics.ListCreateAPIView):
     queryset = JNCInspectModel.objects.all()
     serializer_class = JNCInspectSerializer
-    # permission_classes = [IsAuthenticated]
 
 
 class JNCInspectDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = JNCInspectModel.objects.all()
     serializer_class = JNCInspectSerializer
-    # permission_classes = [IsAuthenticated]

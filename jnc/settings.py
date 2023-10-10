@@ -54,6 +54,7 @@ INSTALLED_APPS += [
 # Custom apps (自定義)
 INSTALLED_APPS += [
     'apps.devices_inspect', 
+    'apps.notify', 
     'apps.system_app', 
 ]
 
