@@ -2,10 +2,26 @@ from rest_framework import serializers
 from devices_inspect.models import \
     JNCPositionModel, JNCDeviceModel, JNCInspectModel, JNCInspectHistoryModel
 
-# 【監測數據】
+
+    
+# 【監測設備】
+class JNCDeviceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = JNCDeviceModel
+        ordering = ['id']
+        fields = '__all__'
+
+# 【監測數據 - 即時】
 class JNCInspectSerializer(serializers.ModelSerializer):
     class Meta:
         model = JNCInspectModel
+        ordering = ['id']
+        fields = '__all__'
+
+# 【監測設備 - 歷史】
+class JNCInspectHistorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = JNCInspectHistoryModel
         ordering = ['id']
         fields = '__all__'
     
