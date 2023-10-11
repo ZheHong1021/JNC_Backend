@@ -8,6 +8,8 @@ from devices_inspect.serializers import \
     JNCDeviceSerializer, JNCInspectSerializer, JNCInspectHistorySerializer
 
 from django.http import HttpResponse
+from datetime import datetime, date
+import datetime as dt
 
 #region 【DRF】
 from rest_framework import generics
@@ -57,7 +59,33 @@ class JNCInspectDetail(generics.RetrieveUpdateDestroyAPIView):
 class JNCInspectHistoryList(generics.ListCreateAPIView):
     queryset = JNCInspectHistoryModel.objects.all()
     serializer_class = JNCInspectHistorySerializer
+    def get_queryset(self): # 調用 get_queryset函式        
+        # 【1】request.GET返回一個QueryDict對象。
+        # 【2】get()方法可以用來獲取指定鍵的值。
+        # 【3】如果該鍵不存在，則返回None
+        start_date = self.request.GET.get('start_date', None)
+        end_date = self.request.GET.get('end_date', None)
+        inspect_id = self.request.GET.get('inspect_id', None)
+        qs = super().get_queryset() # 得到 QuerySet
+        filters = {} # 透過這樣方式去做篩選
+        
+        if inspect_id:
+            filters['inspect_id'] = inspect_id
+
+        if start_date and end_date:
+            filters['created_at__range'] = (start_date, end_date)
+        else:
+            filters['created_at__range'] = (
+                datetime.combine( date.today(), dt.time.min ), 
+                datetime.combine( date.today(), dt.time.max )
+            )
+     
+        if filters:
+            qs = qs.filter(**filters)
+
+        return qs # 如果找不到Request則回傳全部
 
 class JNCInspectHistoryDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = JNCInspectHistoryModel.objects.all()
     serializer_class = JNCInspectHistorySerializer
+    
