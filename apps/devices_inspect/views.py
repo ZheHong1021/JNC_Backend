@@ -72,8 +72,8 @@ class JNCInspectHistoryList(generics.ListCreateAPIView):
         
         if inspect_id:
             filters['inspect_id__id__in'] = json.loads(inspect_id)
-        else: # 多數篩選
-            filters['inspect_id__id__in'] = [2, 3, 4, 5]
+        # else: # 多數篩選
+        #     filters['inspect_id__id__in'] = [2, 3, 4, 5]
 
         
         if start_date and end_date:
@@ -84,12 +84,12 @@ class JNCInspectHistoryList(generics.ListCreateAPIView):
                 datetime.combine( datetime.strptime(end_date, '%Y-%m-%d'), dt.time.max )
             )
         else:
-            filters['created_at__range'] = ('2023-10-11 00:00:00', '2023-10-11 10:59:59')
+            # filters['created_at__range'] = ('2023-10-11 00:00:00', '2023-10-11 10:59:59')
             # filters['created_at__range'] = ('2023-10-10 00:00:00', '2023-10-11 23:59:59')
-            # filters['created_at__range'] = (
-            #     datetime.combine( date.today(), dt.time.min ), 
-            #     datetime.combine( date.today(), dt.time.max )
-            # )
+            filters['created_at__range'] = (
+                datetime.combine( date.today(), dt.time.min ), 
+                datetime.combine( date.today(), dt.time.max )
+            )
      
         if filters:
             qs = qs.filter(**filters)
