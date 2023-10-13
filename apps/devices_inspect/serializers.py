@@ -21,10 +21,15 @@ class JNCInspectSerializer(serializers.ModelSerializer):
 
 # 【監測設備 - 歷史】
 class JNCInspectHistorySerializer(serializers.ModelSerializer):
+    # 檢測項目名稱
+    inspect_name = serializers.SerializerMethodField() 
     class Meta:
         model = JNCInspectHistoryModel
         ordering = ['id']
         fields = '__all__'
+    
+    def get_inspect_name(self, instance):
+        return instance.inspect_id.TagName
 
     # 定義新變數(record_time: 用於紀錄時間)
     def to_representation(self, instance):

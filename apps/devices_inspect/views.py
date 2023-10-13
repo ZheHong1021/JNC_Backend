@@ -10,6 +10,7 @@ from devices_inspect.serializers import \
 from django.http import HttpResponse
 from datetime import datetime, date
 import datetime as dt
+import json
 
 #region 【DRF】
 from rest_framework import generics
@@ -70,15 +71,25 @@ class JNCInspectHistoryList(generics.ListCreateAPIView):
         filters = {} # 透過這樣方式去做篩選
         
         if inspect_id:
-            filters['inspect_id'] = inspect_id
+            filters['inspect_id__id__in'] = json.loads(inspect_id)
+        else: # 多數篩選
+            filters['inspect_id__id__in'] = [2, 3, 4, 5]
 
+        
         if start_date and end_date:
-            filters['created_at__range'] = (start_date, end_date)
-        else:
+
+            # filters['created_at__range'] = (start_date, end_date)
             filters['created_at__range'] = (
-                datetime.combine( date.today(), dt.time.min ), 
-                datetime.combine( date.today(), dt.time.max )
+                datetime.combine( datetime.strptime(start_date, '%Y-%m-%d'), dt.time.min ), 
+                datetime.combine( datetime.strptime(end_date, '%Y-%m-%d'), dt.time.max )
             )
+        else:
+            filters['created_at__range'] = ('2023-10-11 00:00:00', '2023-10-11 10:59:59')
+            # filters['created_at__range'] = ('2023-10-10 00:00:00', '2023-10-11 23:59:59')
+            # filters['created_at__range'] = (
+            #     datetime.combine( date.today(), dt.time.min ), 
+            #     datetime.combine( date.today(), dt.time.max )
+            # )
      
         if filters:
             qs = qs.filter(**filters)
