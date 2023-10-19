@@ -21,7 +21,7 @@ if( DEBUG ):
         re_path(r'^$', TemplateView.as_view(template_name="index.html")), # 配置前端路由
 
         path('admin/', admin.site.urls),
-        path('api/jnc/', include('apps.devices_inspect.urls')), # 新增的app
+        path('api/jnc/', include('devices_inspect.urls')), # 新增的app
 
         # 透過正則來去挑出路由
         re_path(r'^media/(?P<path>.*)$' , static_serve, { 'document_root' : settings.MEDIA_ROOT}),
@@ -38,7 +38,7 @@ else:
         re_path(r'^$', TemplateView.as_view(template_name="index.html")), # 配置前端路由
 
         path('admin/', admin.site.urls),
-        path('api/jnc/', include('apps.devices_inspect.urls')), # 新增的app
+        path('api/jnc/', include('devices_inspect.urls')), # 新增的app
 
         re_path(r'^static/(?P<path>.*)$', return_static, name='static'), # 新增這行
         re_path(r'^media/(?P<path>.*)$' , static_serve, { 'document_root' : settings.MEDIA_ROOT}),
