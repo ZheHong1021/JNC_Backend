@@ -12,6 +12,8 @@ from datetime import datetime, date
 import datetime as dt
 import json
 
+from drf_spectacular .utils import extend_schema # 引用
+
 #region 【DRF】
 from rest_framework import generics
 #endregion
@@ -37,10 +39,12 @@ class JNCDeviceDetail(generics.RetrieveUpdateDestroyAPIView):
 
     
 # 【監測場域】
+@extend_schema(responses=JNCPositionSerializer)
 class JNCPositionList(generics.ListCreateAPIView):
     queryset = JNCPositionModel.objects.all()
     serializer_class = JNCPositionSerializer
 
+@extend_schema(responses=JNCPositionInspectSerializer)
 class JNCPositionDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = JNCPositionModel.objects.all()
     serializer_class = JNCPositionInspectSerializer

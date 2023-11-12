@@ -4,6 +4,7 @@ from devices_inspect.models import \
 
 from datetime import datetime
 
+
     
 # 【監測設備】
 class JNCDeviceSerializer(serializers.ModelSerializer):

@@ -15,37 +15,45 @@ from django.views.static import serve as static_serve # 注意這裏引入的與
 def return_static(request, path, insecure=True, **kwargs): 
     return serve(request, path, insecure, **kwargs)
 
+
+
+urlpatterns = [
+    re_path(r'^$', TemplateView.as_view(template_name="index.html")), # 配置前端路由
+
+    path('api/', include('user_token.urls')),
+    path('api/', include('system_app.urls')),
+    path('api/jnc/', include('devices_inspect.urls')), # 新增的app
+
+    # 【靜態檔案】透過正則來去挑出路由
+    re_path(r'^media/(?P<path>.*)$' , static_serve, { 'document_root' : settings.MEDIA_ROOT}),
+    
+]
+
+
+# 【Swagger UI】
+from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
+
+
 # 【測試開發】: DEBUG = True(Deployment)
-if( DEBUG ):
-    urlpatterns = [
-        re_path(r'^$', TemplateView.as_view(template_name="index.html")), # 配置前端路由
-
+if DEBUG:
+    urlpatterns += [
         path('admin/', admin.site.urls),
-        path('api/', include('user_token.urls')),
-        path('api/', include('system_app.urls')),
-        path('api/jnc/', include('devices_inspect.urls')), # 新增的app
 
-        # 透過正則來去挑出路由
-        re_path(r'^media/(?P<path>.*)$' , static_serve, { 'document_root' : settings.MEDIA_ROOT}),
-
-
-        # 【解決Vue-Router History mode刷新頁面404的問題】https://blog.csdn.net/lucky__peng/article/details/124950853
-        re_path(r'.*', TemplateView.as_view(template_name="index.html")), # 新增的(加在最後一段，這樣如果有找不到的內容都會被導引到index.html)
+        path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
+        path("api/schema/docs/", SpectacularSwaggerView.as_view(url_name="schema")),
+        
     ]
-
-
 # 【正式上線】: DEBUG = False(Production)
 else:
-    urlpatterns = [
-        re_path(r'^$', TemplateView.as_view(template_name="index.html")), # 配置前端路由
-        path('api-auth/', include('rest_framework.urls')),
-
-        path('admin/', admin.site.urls),
-        path('api/jnc/', include('devices_inspect.urls')), # 新增的app
-
-        re_path(r'^static/(?P<path>.*)$', return_static, name='static'), # 新增這行
-        re_path(r'^media/(?P<path>.*)$' , static_serve, { 'document_root' : settings.MEDIA_ROOT}),
-
-        # 【解決Vue-Router History mode刷新頁面404的問題】https://blog.csdn.net/lucky__peng/article/details/124950853
-        re_path(r'.*', TemplateView.as_view(template_name="index.html")), # 新增的(加在最後一段，這樣如果有找不到的內容都會被導引到index.html)
+    urlpatterns += [
     ]
+    
+
+# 【最後一部】
+urlpatterns += [
+    
+
+    # 【解決Vue-Router History mode刷新頁面404的問題】https://blog.csdn.net/lucky__peng/article/details/124950853
+    re_path(r'.*', TemplateView.as_view(template_name="index.html")), # 新增的(加在最後一段，這樣如果有找不到的內容都會被導引到index.html)
+]
+

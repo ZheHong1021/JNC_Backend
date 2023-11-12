@@ -12,7 +12,6 @@ class Author(models.Model):
 # Create your models here.
 class Book(models.Model):
     title = models.CharField('Token使用的場', max_length=255)
-
     author_id = models.ForeignKey(
         Author,
         related_name="books",

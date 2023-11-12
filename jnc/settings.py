@@ -51,7 +51,8 @@ INSTALLED_APPS += [
     'corsheaders',
     'rest_framework', # rest_framework
     'django_extensions', # 可以使用一些專案查詢工具(EX: python manage.py show_urls)
-    'rest_framework.authtoken',
+    'rest_framework.authtoken', # 使用『TokenAuthentication』
+    'drf_spectacular' # Swagger UI
 ]
 
 # Custom apps (自定義)
@@ -200,5 +201,11 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
     #     'rest_framework.permissions.IsAuthenticated',
         # 'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
-    ]
+    ],
+
+    'DEFAULT_SCHEMA_CLASS': "drf_spectacular.openapi.AutoSchema"
+}
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Django Project",
 }
