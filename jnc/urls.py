@@ -8,8 +8,8 @@ from django.conf.urls.static import static
 
 # 引用前端路由使用
 from django.views.generic import TemplateView
-
 # 定義方法
+
 from django.contrib.staticfiles.views import serve
 from django.views.static import serve as static_serve # 注意這裏引入的與上面的不同
 def return_static(request, path, insecure=True, **kwargs): 
@@ -21,6 +21,8 @@ if( DEBUG ):
         re_path(r'^$', TemplateView.as_view(template_name="index.html")), # 配置前端路由
 
         path('admin/', admin.site.urls),
+        path('api/', include('user_token.urls')),
+        path('api/', include('system_app.urls')),
         path('api/jnc/', include('devices_inspect.urls')), # 新增的app
 
         # 透過正則來去挑出路由
@@ -36,6 +38,7 @@ if( DEBUG ):
 else:
     urlpatterns = [
         re_path(r'^$', TemplateView.as_view(template_name="index.html")), # 配置前端路由
+        path('api-auth/', include('rest_framework.urls')),
 
         path('admin/', admin.site.urls),
         path('api/jnc/', include('devices_inspect.urls')), # 新增的app

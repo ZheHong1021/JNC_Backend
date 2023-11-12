@@ -24,9 +24,12 @@ SECRET_KEY = 'django-insecure-39jd814rlilr8!3chyh+c^=cpk#0hubma2^s6=20ot8)j&ha2k
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # 【系統模式】: 二選一
-# DEBUG = True # Development Mode (測試開發)
-DEBUG = False # Production Mode (正式發布)
+DEBUG = True # Development Mode (測試開發)
+# DEBUG = False # Production Mode (正式發布)
 
+
+# APPEND_SLASH = False
+# APPEND_SLASH = True
 
 # ALLOWED_HOSTS = []
 ALLOWED_HOSTS = ['*'] # 允許所有網域進入
@@ -48,6 +51,7 @@ INSTALLED_APPS += [
     'corsheaders',
     'rest_framework', # rest_framework
     'django_extensions', # 可以使用一些專案查詢工具(EX: python manage.py show_urls)
+    'rest_framework.authtoken',
 ]
 
 # Custom apps (自定義)
@@ -55,6 +59,7 @@ INSTALLED_APPS += [
     'apps.devices_inspect', 
     'apps.notify', 
     'apps.system_app', 
+    'user_token', 
 ]
 
 # 如果要透過 apps來管理每個 appa，則必須加上這行，否則上方 INSTALLED_APPS則必須要加上前綴 <apps>
@@ -82,7 +87,9 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         # 'DIRS': [os.path.join(BASE_DIR, "templates")], # 設定 Template路徑讓 Django可以讀取到模版
-        'DIRS': [os.path.join(BASE_DIR, 'frontend/dist')], # 讀取 VueJS build後所生成的 dist檔
+        'DIRS': [
+            os.path.join(BASE_DIR, 'frontend/dist'), # 讀取 VueJS build後所生成的 dist檔
+        ], 
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -179,7 +186,8 @@ MEDIA_URL = '/media/'
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+# DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField' # 修改
 
 
 # 斜槓
@@ -189,7 +197,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # settings.py
 REST_FRAMEWORK = {
     # 【權限限制】
-    # 'DEFAULT_PERMISSION_CLASSES': [
+    'DEFAULT_PERMISSION_CLASSES': [
     #     'rest_framework.permissions.IsAuthenticated',
-    # ]
+        # 'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
 }
